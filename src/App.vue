@@ -16,22 +16,28 @@
         <nav class="tabs is-boxed is-fullwidth">
           <div class="container">
             <ul>
-              <li :v-if:is-d="is-active"><a>TodoList</a></li>
+              <li class="is-active"><a>TodoList</a></li>
               <li><a>Plan</a></li>
             </ul>
           </div>
         </nav>
       </div>
     </section>
-
-    <section class="columns is-gapless is-desktop">
+    <mq-layout mq="mobile">
       <div class="column is-one-third-widescreen">
-        <TodoList/>
-      </div>
-      <div class="column">
-        <MapDisplayer/>
-      </div>
+          <TodoList/>
+        </div>
+    </mq-layout>
+    <mq-layout mq="mobile+">
+      <section class="columns is-gapless is-desktop">
+        <div class="column is-one-third-widescreen">
+          <TodoList/>
+        </div>
+        <div class="column">
+          <MapDisplayer/>
+        </div>
     </section>
+    </mq-layout>
   </div>
 </template>
 

@@ -1,47 +1,35 @@
 <template>
-  <div id="app">
-    <section class="hero is-primary">
-      <div class="hero-body">
-        <div class="container">
-          <h1 class="title is-size-4-touch">
-            ArchiTech
-          </h1>
-          <h2 class="subtitle is-size-7-touch">
-            Being more efficient, in all conditions.
-          </h2>
-        </div>
-      </div>
-          <!-- Hero footer: will stick at the bottom -->
-      <div class="hero-foot is-hidden-desktop">
-        <nav class="tabs is-boxed is-fullwidth">
-          <div class="container">
-            <ul>
-              <li class="is-active"><a>TodoList</a></li>
-              <li><a>Plan</a></li>
-            </ul>
-          </div>
-        </nav>
-      </div>
-    </section>
-    <mq-layout mq="mobile">
-      <div class="column is-one-third-widescreen">
-          <TodoList/>
+<div class="is-fullheight">
+    <mq-layout mq="mobile"  class="is-fullheight">
+      <Header :planActive="showPlan" :showmenu="true" @btnPlanClicked="toggleToPlan()" @btnTodoClicked="toggleToList()"/>
+        <div class="column fullColumn is-one-third-widescreen is-fullheight">
+          <TodoList :show="showTodo"/>
+          <MapDisplayer :show="showPlan"/>
         </div>
     </mq-layout>
-    <mq-layout mq="mobile+">
-      <section class="columns is-gapless is-desktop">
-        <div class="column is-one-third-widescreen">
-          <TodoList/>
+    <mq-layout mq="tablet"  class="is-fullheight">
+      <Header :planActive="showPlan" :showmenu="true" @btnPlanClicked="toggleToPlan()" @btnTodoClicked="toggleToList()"/>
+        <div class="column fullColumn is-one-third-widescreen is-fullheight">
+          <TodoList :show="showTodo"/>
+          <MapDisplayer :show="showPlan"/>
+        </div>
+    </mq-layout>
+    <mq-layout mq="laptop+" class="is-fullheight">
+      <Header ref="desktopHeader"/>
+      <section ref="desktopEnv" class="columns is-gapless">
+        <div class="column is-one-third-widescreen is-fullheight">
+          <TodoList :show="true" class="is-fullheight"/>
         </div>
         <div class="column">
-          <MapDisplayer/>
+          <MapDisplayer :show="true"/>
         </div>
-    </section>
+      </section>
     </mq-layout>
-  </div>
+</div>
 </template>
 
 <script>
+import Header from './components/Header.vue'
 import TodoList from './components/TodoList.vue'
 import MapDisplayer from './components/MapDisplayer.vue'
 
@@ -50,14 +38,49 @@ export default {
   name: 'app',
   components: {
     TodoList,
-    MapDisplayer
+    MapDisplayer,
+    Header
+  },
+  data() {
+    return {
+      showPlan : false,
+      showTodo : true
+    }
+  },
+  methods : {
+    toggleToPlan() {
+      this.showPlan = true;
+      this.showTodo = false;
+    },
+    toggleToList() {
+      this.showPlan = false;
+      this.showTodo = true;
+    }
+  },
+  mounted (){
+    this.$nextTick(() => {
+      if(this.$refs.desktopEnv != null){
+        
+        const h = window.innerHeight - this.$refs.desktopHeader.$el.clientHeight;
+        console.log(h);
+        this.$refs.desktopEnv.style.height = h+ "px";
+      }
+    });
   }
 }
 </script>
 
 <style>
-.is-fullheight{
-  height: 100%;
 
+.compact {
+  padding: 1.5rem 1.5rem !important;
+}
+
+.is-fullheight {
+  height: 100%;
+}
+
+.fullColumn{
+  padding: 0 0 0 0 !important;
 }
 </style>

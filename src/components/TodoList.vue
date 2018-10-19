@@ -1,12 +1,12 @@
 <template>
-    <div class="content">
-        <div id="todolist"  class="notification">
+    <div v-if="show" class="content is-fullheight">
+        <div class="notification todolist">
             <h1 class="title has-text-centered">Todo list</h1>
             <TaskForm 
                 v-on:addButtonPressed="addTodo($event)"
                 @keydown.enter="addTodo"
             />
-            <div id="list">
+            <div class="list">
                 <Task
                     v-for="t in tasks"
                     :key="t.id"
@@ -34,14 +34,15 @@ export default {
       return {
           newTodoText: '',
           tasks: [
-            { id: nextTodoId++, title:"my first task", body:"some precisions on the message"},
-            { id: nextTodoId++, title:"my second task", body:"some precisions on the message 2"},
-            { id: nextTodoId++, title:"my third task", body:"some precisions on the message 3"},
-            { id: nextTodoId++, title:"my third task", body:"some precisions on the message 3"},
-            { id: nextTodoId++, title:"my third task", body:"some precisions on the message 3"},
-            { id: nextTodoId++, title:"my third task", body:"some precisions on the message 3"}
+            { id: nextTodoId++, title:"Parquet à poser", body:"Dans le salon"},
+            { id: nextTodoId++, title:"Carrelage à poser", body:"Dans la cuisine"},
+            { id: nextTodoId++, title:"Mur à casser", body:"Dans le salon"},
+            { id: nextTodoId++, title:"Raccorder les eaux", body:"Dans les toilettes"}
         ]
       }
+  },
+  props : {
+      show : Boolean
   },
   methods: {
     addTodo (text) {
@@ -64,13 +65,16 @@ export default {
 
 <style>
 
-    #todollist {
+    .todolist {
         height: 100%;
         overflow-y: auto;
-        flex-direction: column;
     }
 
     .is-fullheight{
         height: 100%;
+    }
+
+    .list:last-child{
+        margin-bottom: 50px; 
     }
 </style>

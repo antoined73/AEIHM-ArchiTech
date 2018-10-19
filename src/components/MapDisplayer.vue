@@ -1,39 +1,64 @@
 <template>
-<div>
-    <!-- <canvas v-el:myCanvas/> -->
-    <figure class="image is-5by3">
-        <img v-el:img src="../assets/plan1.jpg" />
-    </figure>
+<div v-if="show" class="is-fullheight">
+     <l-map
+      ref="map"
+      :min-zoom="minZoom"
+      :crs="crs">
+      <l-image-overlay
+        :url="url"
+        :bounds="bounds"/>
+      <l-marker
+        v-for="star in stars"
+        :lat-lng="star"
+        :key="star.name">
+        <l-popup :content="star.name"/>
+      </l-marker>
+      <l-polyline :lat-lngs="travel"/>
+</l-map>
 </div>
 </template>
 
 <script>
+import { LMap, LImageOverlay, LMarker, LPopup, LPolyline } from 'vue2-leaflet';
+import L from 'leaflet'
 import Task from "./Task.vue"
 import TaskForm from "./TaskForm.vue"
+import Image from "../assets/plan1.jpg"
 
 export default {
   name: 'MapDisplayer',
   components: {
-    Task,
-    TaskForm
+    LMap,
+    LImageOverlay,
+    LMarker,
+    LPopup,
+    LPolyline
   },
-  mounted(){
-
-        this.$$.myCanvas.style.position = "absolute";
-        this.$$.myCanvas.style.left = this.$el.img.offsetLeft + "px";
-        this.$$.myCanvas.style.top = this.$el.img.offsetTop+ "px";
-
-        var ctx = this.$h.myCanvas.getContext("2d");
-        ctx.beginPath();
-        ctx.arc(250, 210, 200, 0, 2 * Math.PI, false);
-        ctx.lineWidth = 3;
-        ctx.strokeStyle = '#00ff00';
-        ctx.stroke();
+  props : {
+      show : Boolean
   },
-  data () {
-      return {
-          image : "'../assets/plan1.jpg'"
-      }
-  }
+  data() {
+    return {
+        map: null,
+         url: Image,
+      bounds: [[0, 0], [1021.5, 1500]],
+      minZoom: -2,
+      crs: L.CRS.Simple,
+      stars: [
+        { name: 'Parquet à poser', lng: 300, lat: 300 },
+        { name: 'Carrelage à poser', lng: 500, lat: 700 },
+        { name: 'Mur à casser', lng: 1040, lat: 300 },
+        { name: 'Raccorder les eaux', lng: 1250, lat: 440 },
+      ],
+    //   travel: [[145.0, 175.2], [8.3, 218.7]]
+    }
+  },
+    mounted () {
+    this.$nextTick(() => {
+        this.map = this.$refs.map.mapObject;
+        this.map.setView([500, 700], 0);
+        // this.map.fitBounds(bounds);
+    })
+},
 }
 </script>

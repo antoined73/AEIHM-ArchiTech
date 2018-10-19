@@ -1,5 +1,5 @@
 <template>
-    <section  ref="header" class="hero is-primary">
+    <section v-if="show" ref="header" class="hero is-primary invisible-on-landscape">
       <div class="hero-body compact">
         <div class="container">
           <h1 class="title is-size-4-touch">
@@ -30,6 +30,11 @@ export default {
         showmenu : Boolean,
         planActive : Boolean
     },
+    data() {
+      return{
+        show : true
+      }
+    },
     methods : {
       btnPlan(){
         this.$emit('btnPlanClicked');
@@ -38,8 +43,22 @@ export default {
       btnTodo(){
         this.$emit('btnTodoClicked');
         this.planActive = false;
+      },
+      applyOrientation() {
+        if(window.innerWidth < 1023){
+          if (window.innerHeight > window.innerWidth) {
+            // alert("You are now in portrait");
+            this.show = true;
+          } else {
+            // alert("You are now in landscape");
+            this.show = false;
+          }
+        }
       }
+    },
+    created(){
+      window.addEventListener('resize', this.applyOrientation);
     }
+    
 }
 </script>
-

@@ -2,10 +2,10 @@
 <div class="is-fullheight">
     <mq-layout mq="mobile"  class="is-fullheight">
       <Header :planActive="showPlan" :showmenu="true" @btnPlanClicked="toggleToPlan()" @btnTodoClicked="toggleToList()"/>
-        <div class="column fullColumn is-one-third-widescreen is-fullheight">
-          <TodoList :show="showTodo"/>
-          <MapDisplayer :show="showPlan"/>
-        </div>
+      <div class="column fullColumn is-one-third-widescreen is-fullheight">
+        <TodoList :show="showTodo"/>
+        <MapDisplayer :show="showPlan"/>
+      </div>
     </mq-layout>
     <mq-layout mq="tablet"  class="is-fullheight">
       <Header :planActive="showPlan" :showmenu="true" @btnPlanClicked="toggleToPlan()" @btnTodoClicked="toggleToList()"/>
@@ -62,10 +62,21 @@ export default {
       if(this.$refs.desktopEnv != null){
         
         const h = window.innerHeight - this.$refs.desktopHeader.$el.clientHeight;
-        console.log(h);
         this.$refs.desktopEnv.style.height = h+ "px";
       }
     });
+
+    // Detect Device Type
+    if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+        // When ready, auto-scroll 1px to hide URL bar
+        window.addEventListener("load", function () {
+            // Set a timeout...
+            setTimeout(function () {
+                // Hide the address bar!
+                window.scrollTo(0, 1);
+            }, 0);
+        });
+    }
   }
 }
 </script>

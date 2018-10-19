@@ -1,7 +1,7 @@
 <template>
 <div v-if="show" class="is-fullheight">
      <l-map
-      ref="map"
+      ref="mymap"
       :min-zoom="minZoom"
       :crs="crs">
       <l-image-overlay
@@ -21,8 +21,6 @@
 <script>
 import { LMap, LImageOverlay, LMarker, LPopup, LPolyline } from 'vue2-leaflet';
 import L from 'leaflet'
-import Task from "./Task.vue"
-import TaskForm from "./TaskForm.vue"
 import Image from "../assets/plan1.jpg"
 
 export default {
@@ -55,7 +53,7 @@ export default {
   },
     mounted () {
     this.$nextTick(() => {
-        this.map = this.$refs.map.mapObject;
+        this.map = this.$refs.mymap.mapObject;
         this.map.setView([500, 700], 0);
         // this.map.fitBounds(bounds);
     })

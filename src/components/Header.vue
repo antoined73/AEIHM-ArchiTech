@@ -15,8 +15,8 @@
         <nav class="tabs is-boxed">
           <div class="container">
             <ul>
-              <li :class="{ 'is-active': !planActive}"><a @click="btnTodo()">TodoList</a></li>
-              <li :class="{ 'is-active': planActive}"><a @click="btnPlan()">Plan</a></li>
+              <li :class="{ 'is-active': !planIsActive}"><a @click="btnTodo()">TodoList</a></li>
+              <li :class="{ 'is-active': planIsActive}"><a @click="btnPlan()">Plan</a></li>
             </ul>
           </div>
         </nav>
@@ -32,19 +32,20 @@ export default {
     },
     data() {
       return{
-        show : true
+        show : true,
+        planIsActive: false
       }
     },
     methods : {
       btnPlan(){
         this.$emit('btnPlanClicked');
-        this.planActive = true;
+        this.planIsActive = true;
       },
       btnTodo(){
         this.$emit('btnTodoClicked');
-        this.planActive = false;
+        this.planIsActive = false;
       },
-      applyOrientation() {
+      updateShowHideHeader() {
         if(window.innerWidth < 1023){
           if (window.innerHeight > window.innerWidth) {
             // alert("You are now in portrait");
@@ -57,7 +58,10 @@ export default {
       }
     },
     created(){
-      window.addEventListener('resize', this.applyOrientation);
+      window.addEventListener('resize', this.updateShowHideHeader);
+    },
+    mounted(){
+      this.planIsActive = this.planActive;
     }
     
 }

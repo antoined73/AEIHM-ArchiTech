@@ -59,24 +59,11 @@ export default {
   },
   mounted (){
     this.$nextTick(() => {
-      if(this.$refs.desktopEnv != null){
-        
+      if(this.$refs.desktopEnv != null){ //calculate height screen 
         const h = window.innerHeight - this.$refs.desktopHeader.$el.clientHeight;
         this.$refs.desktopEnv.style.height = h+ "px";
       }
     });
-
-    // Detect Device Type
-    if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
-        // When ready, auto-scroll 1px to hide URL bar
-        window.addEventListener("load", function () {
-            // Set a timeout...
-            setTimeout(function () {
-                // Hide the address bar!
-                window.scrollTo(0, 1);
-            }, 0);
-        });
-    }
   }
 }
 </script>

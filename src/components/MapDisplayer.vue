@@ -19,9 +19,12 @@
 </template>
 
 <script>
+import L from 'leaflet';
 import { LMap, LImageOverlay, LMarker, LPopup, LPolyline } from 'vue2-leaflet';
-import L from 'leaflet'
-import Image from "../assets/plan1.jpg"
+
+import { Fullscreen } from "leaflet-fullscreen";
+
+import Image from "../assets/plan1.jpg";
 
 export default {
   name: 'MapDisplayer',
@@ -37,8 +40,8 @@ export default {
   },
   data() {
     return {
-        map: null,
-         url: Image,
+      map: null,
+      url: Image,
       bounds: [[0, 0], [1021.5, 1500]],
       minZoom: -2,
       crs: L.CRS.Simple,
@@ -48,15 +51,20 @@ export default {
         { name: 'Mur à casser', lng: 1040, lat: 300 },
         { name: 'Raccorder les eaux', lng: 1250, lat: 440 },
       ],
-    //   travel: [[145.0, 175.2], [8.3, 218.7]]
+      travel: []
+
+      // travel: [[145.0, 175.2], [8.3, 218.7]]
     }
   },
-    mounted () {
+  mounted () {
     this.$nextTick(() => {
+      if(this.show){
         this.map = this.$refs.mymap.mapObject;
         this.map.setView([500, 700], 0);
+        this.map.addControl(new L.Control.Fullscreen());
+      }
         // this.map.fitBounds(bounds);
     })
-},
+  },
 }
 </script>

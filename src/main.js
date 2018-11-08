@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import VueMq from 'vue-mq'
-
+import store from './store'
 
 // CSS
 import './../node_modules/bulma/css/bulma.css';
@@ -33,6 +33,7 @@ Vue.use(VueMq, {
 })
 
 new Vue({
+  store,
   render: h => h(App)
 }).$mount('#app')
 

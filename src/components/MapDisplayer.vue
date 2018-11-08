@@ -8,10 +8,10 @@
         :url="url"
         :bounds="bounds"/>
       <l-marker
-        v-for="star in stars"
-        :lat-lng="star"
-        :key="star.name">
-        <l-popup :content="star.name"/>
+        v-for="marker in markers"
+        :lat-lng="marker"
+        :key="marker.id">
+        <l-popup :content="getMarkerContent(marker)"/>
       </l-marker>
       <l-polyline :lat-lngs="travel"/>
 </l-map>
@@ -45,15 +45,7 @@ export default {
       bounds: [[0, 0], [1021.5, 1500]],
       minZoom: -2,
       crs: L.CRS.Simple,
-      stars: [
-        { name: 'Parquet à poser', lng: 300, lat: 300 },
-        { name: 'Carrelage à poser', lng: 500, lat: 700 },
-        { name: 'Mur à casser', lng: 1040, lat: 300 },
-        { name: 'Raccorder les eaux', lng: 1250, lat: 440 },
-      ],
       travel: []
-
-      // travel: [[145.0, 175.2], [8.3, 218.7]]
     }
   },
   mounted () {
@@ -63,8 +55,18 @@ export default {
         this.map.setView([500, 700], 0);
         this.map.addControl(new L.Control.Fullscreen());
       }
-        // this.map.fitBounds(bounds);
     })
   },
+  computed : {
+    markers(){
+      return this.$store.getters.getMarkersOfUnfinishedTasksForSelectedUser;
+    }
+  },
+  methods : {
+    getMarkerContent(marker){
+      const content = this.$store.getters.getTaskLinkedToMarker(marker).title;
+      return content;
+    }
+  }
 }
 </script>

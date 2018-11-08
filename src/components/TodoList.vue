@@ -32,13 +32,7 @@ export default {
   },
   data () {
       return {
-          newTodoText: '',
-          tasks: [
-            { id: nextTodoId++, title:"Parquet à poser", body:"Dans le salon"},
-            { id: nextTodoId++, title:"Carrelage à poser", body:"Dans la cuisine"},
-            { id: nextTodoId++, title:"Mur à casser", body:"Dans le salon"},
-            { id: nextTodoId++, title:"Raccorder les eaux", body:"Dans les toilettes"}
-        ]
+          newTodoText: ''
       }
   },
   props : {
@@ -48,17 +42,18 @@ export default {
     addTodo (text) {
         const trimmedText = text.trim()
         if (trimmedText) {
-            this.tasks.push({
-                id: nextTodoId++,
-                title: trimmedText
-            })
+            //add task in store
+            this.$store.commit('addTask', trimmedText);
         }
     },
     removeTodo (idToRemove) {
-        this.tasks = this.tasks.filter(task => {
-            return task.id !== idToRemove
-        });
+        this.$store.commit('markTaskFinished', {id: idToRemove, finished : true});
     }
+  },
+  computed : {
+      tasks(){
+          return this.$store.getters.getUnfinishedTasksForSelectedUser;
+      }
   }
 }
 </script>
